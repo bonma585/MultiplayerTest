@@ -8,9 +8,9 @@ public class MultiplayerTest : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-        PublicDependencyModuleNames.AddRange(new string[] { "Core", 
-                                                            "CoreUObject", 
-                                                            "Engine", 
+        PublicDependencyModuleNames.AddRange(new string[] { "Core",
+                                                            "CoreUObject",
+                                                            "Engine",
                                                             "InputCore",
                                                             "NavigationSystem",
                                                             "AIModule",
@@ -19,5 +19,8 @@ public class MultiplayerTest : ModuleRules
                                                             "OnlineSubsystem",
                                                             "OnlineSubsystemNull",
                                                             "OnlineSubsystemSteam" });
+
+
+
     }
 }

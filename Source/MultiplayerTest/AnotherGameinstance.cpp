@@ -155,5 +155,6 @@ void UAnotherGameinstance::OnDestroySessionComplete(FName SessionName, bool bWas
         // After destroying the session, create a new one
         CreateServer();
     }
+
 }
 
