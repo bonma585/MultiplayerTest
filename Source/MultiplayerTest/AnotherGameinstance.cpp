@@ -107,7 +107,7 @@ void UAnotherGameinstance::OnCreateSessionComplete(FName SessionName, bool bSucc
         UE_LOG(LogTemp, Warning, TEXT("Session ID: %s"), *SessionId);
 
         // Ensure ServerTravel is called correctly for both cases
-        GetWorld()->ServerTravel("/Game/TopDown/Maps/TopDownMap?listen");
+        GetWorld()->ServerTravel("/Game/TopDown/Maps/Mansion?listen");
     }
     else {
         UE_LOG(LogTemp, Error, TEXT("Failed to create session"));
