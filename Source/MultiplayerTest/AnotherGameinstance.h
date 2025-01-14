@@ -22,6 +22,23 @@ class MULTIPLAYERTEST_API UAnotherGameinstance : public UGameInstance
 public:
     UAnotherGameinstance();
 
+    TSubclassOf<UUserWidget> ServerDisplayRowClass;
+
+    UFUNCTION(EXEC)
+    void host(FString sessionName);
+
+    UFUNCTION(EXEC)
+    void join(int32 Index);
+
+
+
+
+    //Delegates
+    void OnFindSessionComplete(bool Succeeded);
+    void OnCreateSessionComplete(FName SessionName, bool wasSuccessful);
+    void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
+    void OnDestroySessionComplete(FName SessionName, bool bWasSuccessful);
+
 protected:
 
     TSharedPtr<FOnlineSessionSearch> SessionSearch;
@@ -37,18 +54,10 @@ protected:
 
     void Init() override;
 
-    UFUNCTION(BlueprintCallable)
-    void CreateServer();
-    UFUNCTION(BlueprintCallable)
-    void JoinServer();
+    
+private:
 
-    //Delegates
-    void OnCreateSessionComplete(FName SessionName, bool wasSuccessful);
-    void OnFindSessionComplete(bool Succeeded);
-    void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
-    void OnDestroySessionComplete(FName SessionName, bool bWasSuccessful);
-
-
+    TSubclassOf<UUserWidget> MenuBPClass;
 
 
 };

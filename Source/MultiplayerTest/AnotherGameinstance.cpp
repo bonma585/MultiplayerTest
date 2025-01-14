@@ -5,9 +5,23 @@
 #include "Kismet/GameplayStatics.h"
 #include "MultiplayerTestPlayerController.h"
 #include "Online/OnlineSessionNames.h"
+#include <Online/OnlineSessionNames.h>
+#include "Blueprint/UserWidget.h"
+
 
 UAnotherGameinstance::UAnotherGameinstance()
 {
+    // Ensure UserWidget class is properly initialized
+    static ConstructorHelpers::FClassFinder<UUserWidget> MenuBPClassFinder(TEXT("/Game/TopDown/Maps/WBP_MainMenu"));
+    if (MenuBPClassFinder.Succeeded()) {
+        MenuBPClass = MenuBPClassFinder.Class;
+    }
+
+    // ServerDisplayRowClass
+    static ConstructorHelpers::FClassFinder<UUserWidget> ServerDisplayRowClassFinder(TEXT("/Game/TopDown/Maps/WBP_ServerDisplayRow"));
+    if (ServerDisplayRowClassFinder.Succeeded()) {
+        ServerDisplayRowClass = ServerDisplayRowClassFinder.Class;
+    }
 }
 
 void UAnotherGameinstance::Init()
@@ -26,7 +40,7 @@ void UAnotherGameinstance::Init()
     }
 }
 
-void UAnotherGameinstance::CreateServer()
+void UAnotherGameinstance::host(FString sessionName)
 {
     UE_LOG(LogTemp, Warning, TEXT("Create Server"));
 
@@ -83,20 +97,21 @@ void UAnotherGameinstance::CreateServer()
 }
 
 
-void UAnotherGameinstance::JoinServer()
+void UAnotherGameinstance::join(int32 Index)
 {
-    UE_LOG(LogTemp, Warning, TEXT("Join Server"));
-
-    // Make sure the session search logic is identical to UMyGameInstance
-    SessionSearch = MakeShareable(new FOnlineSessionSearch());
-    SessionSearch->bIsLanQuery = (IOnlineSubsystem::Get()->GetSubsystemName() == "NULL");
-    SessionSearch->MaxSearchResults = 10000;
-
-    // Use the same query settings as MyGameInstance
-    SessionSearch->QuerySettings.Set(SEARCH_PRESENCE, true, EOnlineComparisonOp::Equals);
-
-    // Initiate session search
-    SessionInterface->FindSessions(0, SessionSearch.ToSharedRef());
+    if (SessionInterface.IsValid() && SessionSearch.IsValid() &&
+        Index >= 0 && Index < SessionSearch->SearchResults.Num()) {
+        const FOnlineSessionSearchResult& SearchResult = SessionSearch->SearchResults[Index];
+        if (SessionInterface->JoinSession(0, "SessionName", SearchResult)) {
+            UE_LOG(LogTemp, Warning, TEXT("Successfully joined session at index %d."), Index);
+        }
+        else {
+            UE_LOG(LogTemp, Error, TEXT("Failed to join session at index %d."), Index);
+        }
+    }
+    else {
+        UE_LOG(LogTemp, Error, TEXT("Invalid session index or session search invalid."));
+    }
 }
 
 
@@ -153,7 +168,7 @@ void UAnotherGameinstance::OnDestroySessionComplete(FName SessionName, bool bWas
 {
     if (bWasSuccessful) {
         // After destroying the session, create a new one
-        CreateServer();
+        host("DefaultSessionName");
     }
 
 }

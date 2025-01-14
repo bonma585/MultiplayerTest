@@ -16,6 +16,7 @@ public class MultiplayerTest : ModuleRules
                                                             "AIModule",
                                                             "Niagara",
                                                             "EnhancedInput",
+                                                            "UMG",
                                                             "OnlineSubsystem",
                                                             "OnlineSubsystemNull",
                                                             "OnlineSubsystemSteam" });
