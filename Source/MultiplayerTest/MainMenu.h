@@ -26,6 +26,7 @@ protected:
 
 private:
 	// UI Bindings
+
 	UPROPERTY(meta = (BindWidget))
 	class UButton* FinalHost;
 

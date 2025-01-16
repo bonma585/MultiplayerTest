@@ -32,6 +32,7 @@ class MULTIPLAYERTEST_API UAnotherGameInstance : public UGameInstance
 {
     GENERATED_BODY()
 
+
 public:
     UAnotherGameInstance();
 

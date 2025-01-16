@@ -6,6 +6,7 @@
 UAnotherGameInstance::UAnotherGameInstance()
 {
     SetupOnlineSession();
+
 }
 
 void UAnotherGameInstance::Init()

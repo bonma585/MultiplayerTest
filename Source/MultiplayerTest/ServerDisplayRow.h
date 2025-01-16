@@ -40,6 +40,7 @@ private:
 	UMainMenu* Parent = nullptr;
 	int32 UniqueIndex = -1;
 
+
 protected:
 	virtual bool Initialize() override;
 };

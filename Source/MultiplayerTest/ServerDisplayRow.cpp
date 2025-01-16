@@ -38,6 +38,7 @@ void UServerDisplayRow::SetSelected(bool InSelected)
 bool UServerDisplayRow::Initialize()
 {
 	if (!Super::Initialize()) { return false; }
+
 	if (!ensure(ServerNameButton != nullptr)) { return false; }
 
 	ServerNameButton->OnClicked.AddDynamic(this, &UServerDisplayRow::NotifyParent);

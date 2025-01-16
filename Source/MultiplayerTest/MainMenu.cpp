@@ -50,6 +50,7 @@ private:
 	// Utility function to update the server rows
 	void UpdateChildren();
 
+
 	// Button click handlers
 	UFUNCTION()
 	void HostServer();
