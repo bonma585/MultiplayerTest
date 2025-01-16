@@ -1,21 +1,15 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "ServerDisplayRow.generated.h"
 
-/**
- *
- */
 UCLASS()
 class MULTIPLAYERTEST_API UServerDisplayRow : public UUserWidget
 {
 	GENERATED_BODY()
 
 public:
-
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	class UTextBlock* ServerName;
 
@@ -34,21 +28,18 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	bool Selected;
 
-	void setParent(class UMainMenu* Menu);
-	void setUniqueIndex(int32 Index);
+	void SetParent(class UMainMenu* Menu);
+	void SetUniqueIndex(int32 Index);
 
 	UFUNCTION()
-	void notifyParent();
+	void NotifyParent();
 
-	void setSelected(bool inSelected);
+	void SetSelected(bool InSelected);
 
 private:
-
-	UMainMenu* Parent;
-	int32 UniqueIndex;
-
-
+	UMainMenu* Parent = nullptr;
+	int32 UniqueIndex = -1;
 
 protected:
-	virtual bool Initialize();
+	virtual bool Initialize() override;
 };

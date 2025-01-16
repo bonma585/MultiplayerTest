@@ -1,71 +1,59 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
-
-#include "Components/Button.h"
-#include "AnotherGameinstance.h"
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "MainMenu.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class MULTIPLAYERTEST_API UMainMenu : public UUserWidget
 {
 	GENERATED_BODY()
 
 public:
+	// Initializes the menu with server data
+	UFUNCTION(BlueprintCallable)
+	void SetServerList(const TArray<FServerData>& ServerData);
 
-	UPROPERTY(BLUEPRINTREADWRITE, meta = (BindWidget))
-	UButton* FinalHost;
+	// Selects a specific server by index
+	void SelectIndex(int32 Index);
 
-	UPROPERTY(BLUEPRINTREADWRITE, meta = (BindWidget))
-	UButton* FinalJoin;
-/*
-	UPROPERTY(BLUEPRINTREADWRITE, meta = (BindWidget))
-	UButton* refreshButton;
-*/
+	// Notify function called when a server row is clicked
+	void NotifyParent(int32 Index);
+
+protected:
+	// Called to bind functionality to UI elements
+	virtual bool Initialize() override;
+
+private:
+	// UI Bindings
+	UPROPERTY(meta = (BindWidget))
+	class UButton* FinalHost;
 
 	UPROPERTY(meta = (BindWidget))
-	class UEditableText* ServerNameText;
+	class UButton* FinalJoin;
 
 	UPROPERTY(meta = (BindWidget))
 	class UScrollBox* ServerList;
 
+	UPROPERTY(meta = (BindWidget))
+	class UWidgetSwitcher* MenuSwitcher;
 
-	void NativeConstruct() override;
-	void NativeDestruct() override;
+	UPROPERTY(meta = (BindWidget))
+	class UWidget* MainMenuWidget;
 
-	class UAnotherGameinstance* AnotherGameinstance;
-	void SetGameInstance(UAnotherGameinstance* gameInstance);
+	UPROPERTY(meta = (BindWidget))
+	class UWidget* JoinMenuWidget;
 
-	int selectedIndex;
-	void notifyParent(int32 index);
+	// Current selected index
+	TOptional<int32> SelectedIndex;
 
-	void UpdateServerList(TArray<FServerData> ServerNames);
+	// Utility function to update the server rows
+	void UpdateChildren();
 
-private:
+	// Button click handlers
 	UFUNCTION()
-	void host();
+	void HostServer();
 
 	UFUNCTION()
-	void join();
-
-	UFUNCTION()
-	void refresh();
-
-	void ButtonEnableFunction();
-	void ButtonDisableFunction();
-};
-
-
-USTRUCT()
-struct FServerData {
-	GENERATED_BODY()
-
-	FString ServerName, PlayerName;
-	int32 CurrentPlayerNumber, MaxPlayerNumber;
+	void JoinServer();
 };

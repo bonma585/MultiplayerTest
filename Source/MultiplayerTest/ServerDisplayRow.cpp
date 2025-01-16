@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 
 #include "ServerDisplayRow.h"
 #include "Components/EditableText.h"
@@ -8,33 +6,40 @@
 #include "MainMenu.h"
 #include "Components/ScrollBox.h"
 
-void UServerDisplayRow::setParent(UMainMenu* Menu)
+void UServerDisplayRow::SetParent(UMainMenu* Menu)
 {
 	Parent = Menu;
 }
 
-void UServerDisplayRow::setUniqueIndex(int32 Index)
+void UServerDisplayRow::SetUniqueIndex(int32 Index)
 {
 	UniqueIndex = Index;
 }
 
-void UServerDisplayRow::notifyParent()
+void UServerDisplayRow::NotifyParent()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Server row has been clicked."));
-	Parent->notifyParent(UniqueIndex);
+	UE_LOG(LogTemp, Warning, TEXT("Server row clicked: Index = %d"), UniqueIndex);
+	if (Parent)
+	{
+		Parent->NotifyParent(UniqueIndex);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Parent is null in ServerDisplayRow."));
+	}
 }
 
-void UServerDisplayRow::setSelected(bool isSelected)
+void UServerDisplayRow::SetSelected(bool InSelected)
 {
-	Selected = isSelected;
-	ServerNameButton->ColorAndOpacity = isSelected ? FLinearColor(1.0f, 1.0f, 0.8f, 1.0f) : FLinearColor::White; //visualize selected row
+	Selected = InSelected;
+	ServerNameButton->ColorAndOpacity = Selected ? FLinearColor(1.0f, 1.0f, 0.8f, 1.0f) : FLinearColor::White;
 }
 
 bool UServerDisplayRow::Initialize()
 {
-	if (!Super::Initialize()) { return false; };
-	if (!ensure(ServerNameButton != nullptr)) { return false; };
-	ServerNameButton->OnClicked.AddDynamic(this, &UServerDisplayRow::notifyParent);
-	UE_LOG(LogTemp, Warning, TEXT("Server row functionality added"));
+	if (!Super::Initialize()) { return false; }
+	if (!ensure(ServerNameButton != nullptr)) { return false; }
+
+	ServerNameButton->OnClicked.AddDynamic(this, &UServerDisplayRow::NotifyParent);
 	return true;
 }
