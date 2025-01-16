@@ -18,6 +18,7 @@ public class MultiplayerTest : ModuleRules
                                                             "EnhancedInput",
                                                             "UMG",
                                                             "OnlineSubsystem",
+                                                            "OnlineSubsystemUtils",
                                                             "OnlineSubsystemNull",
                                                             "OnlineSubsystemSteam" });
 

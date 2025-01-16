@@ -25,6 +25,8 @@ struct FServerData
     int32 MaxPlayers;
 };
 
+
+
 UCLASS()
 class MULTIPLAYERTEST_API UAnotherGameInstance : public UGameInstance
 {
@@ -56,6 +58,7 @@ public:
     UFUNCTION()
     void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
 
+    
 private:
     void SetupOnlineSession();
 
