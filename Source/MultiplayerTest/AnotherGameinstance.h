@@ -1,54 +1,73 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
-
-#include "OnlineSubsystem.h"
-#include "OnlineSessionSettings.h"
+#include "Engine/GameInstance.h"
 #include "Interfaces/OnlineSessionInterface.h"
 
-#include "Engine/GameInstance.h"
-#include "AnotherGameinstance.generated.h"
+#include "OnlineSubsystem.h" 
+#include "AnotherGameInstance.generated.h"
 
-/**
- * 
- */
-UCLASS()
-class MULTIPLAYERTEST_API UAnotherGameinstance : public UGameInstance
+USTRUCT(BlueprintType)
+struct FServerData
 {
     GENERATED_BODY()
 
+    UPROPERTY(BlueprintReadWrite)
+    FString ServerName;
+
+    UPROPERTY(BlueprintReadWrite)
+    FString HostName;
+
+    UPROPERTY(BlueprintReadWrite)
+    int32 CurrentPlayers;
+
+    UPROPERTY(BlueprintReadWrite)
+    int32 MaxPlayers;
+};
+
+
+
+UCLASS()
+class MULTIPLAYERTEST_API UAnotherGameInstance : public UGameInstance
+{
+    GENERATED_BODY()
+
+
 public:
-    UAnotherGameinstance();
+    UAnotherGameInstance();
 
-protected:
-
-    TSharedPtr<FOnlineSessionSearch> SessionSearch;
-
-    IOnlineSessionPtr SessionInterface;
-
-    FName SESSION_NAME = FName("My Game");
-
-    FName testKey = FName("ServerKey");
-    FName testValue = FName("ServerName");
-
-
-
-    void Init() override;
+    virtual void Init() override;
 
     UFUNCTION(BlueprintCallable)
-    void CreateServer();
-    UFUNCTION(BlueprintCallable)
-    void JoinServer();
+    void Host(const FString& ServerName);
 
-    //Delegates
-    void OnCreateSessionComplete(FName SessionName, bool wasSuccessful);
-    void OnFindSessionComplete(bool Succeeded);
-    void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
+    UFUNCTION(BlueprintCallable)
+    void Join(int32 ServerIndex);
+
+    UFUNCTION(BlueprintCallable)
+    void FindSessions();
+
+    UFUNCTION()
+    void OnCreateSessionComplete(FName SessionName, bool bWasSuccessful);
+
+    UFUNCTION()
     void OnDestroySessionComplete(FName SessionName, bool bWasSuccessful);
 
+    UFUNCTION()
+    void OnFindSessionsComplete(bool bWasSuccessful);
 
+    UFUNCTION()
+    void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
 
+    
+private:
+    void SetupOnlineSession();
 
+    IOnlineSessionPtr SessionInterface;
+    TSharedPtr<FOnlineSessionSearch> SessionSearch;
+
+    FString DesiredServerName;
+
+    // Updates the server list in MainMenu
+    void UpdateMainMenuServerList(const TArray<FServerData>& ServerData);
 };
