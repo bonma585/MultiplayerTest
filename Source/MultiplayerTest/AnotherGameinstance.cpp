@@ -1,6 +1,5 @@
 #include "AnotherGameInstance.h"
 #include "OnlineSubsystem.h"
-#include "OnlineSessionSettings.h"
 #include "MainMenu.h"
 #include "ServerDisplayRow.h"
 
@@ -125,8 +124,4 @@ void UAnotherGameInstance::OnJoinSessionComplete(FName SessionName, EOnJoinSessi
             PlayerController->ClientTravel(ConnectString, ETravelType::TRAVEL_Absolute);
         }
     }
-
-    // Optionally log the result
-    UE_LOG(LogTemp, Log, TEXT("Join Session Result: %d"), static_cast<int32>(Result));
 }
-

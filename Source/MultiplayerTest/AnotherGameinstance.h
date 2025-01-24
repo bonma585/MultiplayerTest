@@ -2,13 +2,10 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
-#include "OnlineSubsystem.h" 
-#include "OnlineSessionSettings.h"  
 #include "Interfaces/OnlineSessionInterface.h"
-#include "Online/CoreOnline.h"
+
+#include "OnlineSubsystem.h" 
 #include "AnotherGameInstance.generated.h"
-
-
 
 USTRUCT(BlueprintType)
 struct FServerData
@@ -59,6 +56,7 @@ public:
     UFUNCTION()
     void OnFindSessionsComplete(bool bWasSuccessful);
 
+    UFUNCTION()
     void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
 
     
