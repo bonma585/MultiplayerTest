@@ -1,3 +1,4 @@
+
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
@@ -11,9 +12,6 @@
 #include "Engine/GameInstance.h"
 #include "AnotherGameinstance.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class MULTIPLAYERTEST_API UAnotherGameinstance : public UGameInstance
 {
