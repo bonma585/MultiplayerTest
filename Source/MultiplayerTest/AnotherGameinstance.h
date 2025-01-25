@@ -57,7 +57,7 @@ public:
     void OnFindSessionsComplete(bool bWasSuccessful);
 
     UFUNCTION()
-    void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
+    void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result):
 
     
 private:

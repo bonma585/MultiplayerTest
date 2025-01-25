@@ -121,7 +121,16 @@ void UAnotherGameInstance::OnJoinSessionComplete(FName SessionName, EOnJoinSessi
         FString ConnectString;
         if (SessionInterface->GetResolvedConnectString(SessionName, ConnectString))
         {
-            PlayerController->ClientTravel(ConnectString, ETravelType::TRAVEL_Absolute);
+            PlayerController->ClientTravel(ConnectString FTravelType::TRAVEL_Absolute)
         }
     }
 }
+
+
+
+
+
+
+
+
+   
