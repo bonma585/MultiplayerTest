@@ -20,11 +20,17 @@ class MULTIPLAYERTEST_API UAnotherGameinstance : public UGameInstance
 public:
     UAnotherGameinstance();
 
+
+    UFUNCTION(BlueprintCallable)
+    void ReturnToMainMenu();
+
+
+    IOnlineSessionPtr SessionInterface;
+
 protected:
 
     TSharedPtr<FOnlineSessionSearch> SessionSearch;
 
-    IOnlineSessionPtr SessionInterface;
 
     FName SESSION_NAME = FName("My Game");
 
@@ -46,7 +52,7 @@ protected:
     void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
     void OnDestroySessionComplete(FName SessionName, bool bWasSuccessful);
 
-
+    
 
 
 };

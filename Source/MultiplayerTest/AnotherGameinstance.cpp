@@ -158,3 +158,23 @@ void UAnotherGameinstance::OnDestroySessionComplete(FName SessionName, bool bWas
 
 }
 
+
+void UAnotherGameinstance::ReturnToMainMenu()
+{
+    // Check if we have a valid session interface
+    if (IOnlineSubsystem* OnlineSubsystem = IOnlineSubsystem::Get())
+    {
+         SessionInterface = OnlineSubsystem->GetSessionInterface();
+        if (SessionInterface.IsValid())
+        {
+            // Destroy the current session
+            SessionInterface->DestroySession(NAME_GameSession);
+        }
+    }
+
+    // Travel all players back to the main menu
+    if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+    {
+        PlayerController->ClientTravel("/Game/Maps/MainMenu", ETravelType::TRAVEL_Absolute);
+    }
+}
