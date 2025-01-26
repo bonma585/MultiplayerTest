@@ -24,8 +24,13 @@ public:
     UFUNCTION(BlueprintCallable)
     void ReturnToMainMenu();
 
+    UFUNCTION()
+    void TravelToMainMenu();
+
 
     IOnlineSessionPtr SessionInterface;
+
+    bool bReturnToMenu = false;
 
 protected:
 

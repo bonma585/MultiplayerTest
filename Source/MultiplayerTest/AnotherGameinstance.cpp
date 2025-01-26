@@ -52,7 +52,7 @@ void UAnotherGameinstance::CreateServer()
     {
         SessionSettings.bIsLANMatch = true;
         SessionSettings.bShouldAdvertise = true;
-        SessionSettings.NumPublicConnections = 5;
+        SessionSettings.NumPublicConnections = 3;
         SessionSettings.bAllowJoinInProgress = true;
     }
     else if (SubsystemName == "Steam") // Steam configuration
@@ -61,7 +61,7 @@ void UAnotherGameinstance::CreateServer()
         SessionSettings.bShouldAdvertise = true;
         SessionSettings.bUsesPresence = true;
         SessionSettings.bUseLobbiesIfAvailable = true;
-        SessionSettings.NumPublicConnections = 5;
+        SessionSettings.NumPublicConnections = 3;
         SessionSettings.bAllowJoinInProgress = true;
         SessionSettings.bAllowJoinViaPresence = true;
     }
@@ -149,30 +149,43 @@ void UAnotherGameinstance::OnFindSessionComplete(bool bSucceeded)
 }
 
 
-void UAnotherGameinstance::OnDestroySessionComplete(FName SessionName, bool bWasSuccessful)
-{
-    if (bWasSuccessful) {
-        // After destroying the session, create a new one
-        CreateServer();
-    }
-
-}
 
 
 void UAnotherGameinstance::ReturnToMainMenu()
 {
+    bReturnToMenu = true;
+
     // Check if we have a valid session interface
-    if (IOnlineSubsystem* OnlineSubsystem = IOnlineSubsystem::Get())
+    if (SessionInterface.IsValid())
     {
-         SessionInterface = OnlineSubsystem->GetSessionInterface();
-        if (SessionInterface.IsValid())
+        // Destroy the current session
+        if (SessionInterface->GetNamedSession(SESSION_NAME) != nullptr)
         {
-            // Destroy the current session
-            SessionInterface->DestroySession(NAME_GameSession);
+            SessionInterface->DestroySession(SESSION_NAME);
+            // The OnDestroySessionComplete callback will handle traveling to the main menu
+            return;
         }
     }
 
-    // Travel all players back to the main menu
+    // If no session exists, directly travel to the main menu
+    TravelToMainMenu();
+}
+
+void UAnotherGameinstance::OnDestroySessionComplete(FName SessionName, bool bWasSuccessful)
+{
+    if (bReturnToMenu)
+    {
+        bReturnToMenu = false; 
+        TravelToMainMenu();
+    }
+    else if (bWasSuccessful)
+    {
+        CreateServer();
+    }
+}
+
+void UAnotherGameinstance::TravelToMainMenu()
+{
     if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
     {
         PlayerController->ClientTravel("/Game/Maps/MainMenu", ETravelType::TRAVEL_Absolute);
